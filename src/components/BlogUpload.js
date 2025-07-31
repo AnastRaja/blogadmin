@@ -15,7 +15,7 @@ function App() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/categories"
+          `${process.env.REACT_APP_API_BASE_URL}/api/categories`
         );
         setCategories(response.data);
         if (response.data.length > 0) {
@@ -42,7 +42,7 @@ function App() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/blogs",
+        `${process.env.REACT_APP_API_BASE_URL}/api/blogs`,
         formData,
         {
           headers: {"Content-Type": "multipart/form-data"},

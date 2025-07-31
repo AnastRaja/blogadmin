@@ -15,7 +15,7 @@ function App() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/categories"
+          `${process.env.REACT_APP_API_BASE_URL}/api/categories`
         );
         setCategories(response.data);
       } catch (error) {
@@ -32,7 +32,7 @@ function App() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/categories",
+        `${process.env.REACT_APP_API_BASE_URL}/api/categories`,
         {name, description},
         {
           headers: {"Content-Type": "application/json"},
@@ -44,7 +44,7 @@ function App() {
       setDescription("");
       // Refresh the categories list
       const updatedCategories = await axios.get(
-        "http://localhost:5000/api/categories"
+        `${process.env.REACT_APP_API_BASE_URL}/api/categories`
       );
       setCategories(updatedCategories.data);
     } catch (error) {
@@ -64,11 +64,13 @@ function App() {
     if (!userConfirmed) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/categories/${id}`);
+      await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/api/categories/${id}`
+      );
       setMessage("Category deleted successfully!");
       // Refresh the categories list
       const updatedCategories = await axios.get(
-        "http://localhost:5000/api/categories"
+        `${process.env.REACT_APP_API_BASE_URL}/api/categories`
       );
       setCategories(updatedCategories.data);
     } catch (error) {
@@ -91,7 +93,7 @@ function App() {
   const handleSave = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/categories/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/categories/${id}`,
         {name: editName, description: editDescription},
         {
           headers: {"Content-Type": "application/json"},
@@ -102,7 +104,7 @@ function App() {
       setEditingCategory(null);
       // Refresh the categories list
       const updatedCategories = await axios.get(
-        "http://localhost:5000/api/categories"
+        `${process.env.REACT_APP_API_BASE_URL}/api/categories`
       );
       setCategories(updatedCategories.data);
     } catch (error) {

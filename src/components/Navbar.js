@@ -56,7 +56,15 @@ function Navbar() {
                   BlogList
                 </a>
               </li>
-
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="/CotactList"
+                >
+                  Contact List
+                </a>
+              </li>
               {/* <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"

@@ -1,37 +1,41 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, {useState} from "react";
+import axios from "axios";
 
 function AddImagePage() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('category', category);
-    formData.append('image', image);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("image", image);
 
     try {
-      await axios.post('http://localhost:5000/api/images', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      alert('Image uploaded successfully');
-      setTitle('');
-      setDescription('');
-      setCategory('');
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/images`,
+        formData,
+        {
+          headers: {"Content-Type": "multipart/form-data"},
+        }
+      );
+      alert("Image uploaded successfully");
+      setTitle("");
+      setDescription("");
+      setCategory("");
       setImage(null);
     } catch (error) {
-      console.error('Error uploading image:', error);
-      alert('Failed to upload image');
+      console.error("Error uploading image:", error);
+      alert("Failed to upload image");
     }
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{padding: "20px"}}>
       <h2>Add New Image</h2>
       <form onSubmit={handleSubmit}>
         <div>

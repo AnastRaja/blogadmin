@@ -6,6 +6,7 @@ import ImageDetailsPage from "./components/ImageDetailsPage";
 import BlogUpload from "./components/BlogUpload";
 import CreateCetergory from "./components/CreateCetergory";
 import BlogList from "./components/BlogList";
+import CotactList from "./components/CotactList";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/blogupload" element={<BlogUpload />} />
         <Route path="/CreateCetergory" element={<CreateCetergory />} />
         <Route path="/BlogList" element={<BlogList />} />
+        <Route path="/CotactList" element={<CotactList />} />
 
         <Route path="/add" element={<AddImagePage />} />
         <Route path="/image/:id" element={<ImageDetailsPage />} />
