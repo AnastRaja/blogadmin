@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Modal from "./Modal";
 
 function HomePage() {
   const [blogCount, setBlogCount] = useState(0);
   const [contactCount, setContactCount] = useState(0);
   const [recentContacts, setRecentContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (contact) => {
+    setSelectedContact(contact);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedContact(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -129,6 +142,7 @@ function HomePage() {
                   <th>Email</th>
                   <th>Date</th>
                   <th>Message</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,6 +165,14 @@ function HomePage() {
                     <td className="text-muted" style={{ maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {contact.requirement}
                     </td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-primary"
+                        onClick={() => openModal(contact)}
+                      >
+                        View
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -158,6 +180,51 @@ function HomePage() {
           </div>
         )}
       </div>
+
+      {selectedContact && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title="Contact Details"
+        >
+          <div className="detail-row">
+            <div className="detail-label">Name</div>
+            <div className="detail-value">{selectedContact.name}</div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Email</div>
+            <div className="detail-value">
+              <a href={`mailto:${selectedContact.email}`} style={{ color: 'var(--color-primary)' }}>
+                {selectedContact.email}
+              </a>
+            </div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Phone</div>
+            <div className="detail-value">{selectedContact.phone}</div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Country</div>
+            <div className="detail-value">{selectedContact.country}</div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Contact Method</div>
+            <div className="detail-value">
+              <span className="badge badge-success">{selectedContact.contactMethod}</span>
+            </div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Date Submitted</div>
+            <div className="detail-value">
+              {new Date(selectedContact.createdAt).toLocaleString()}
+            </div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Requirement/Message</div>
+            <div className="detail-value" style={{ whiteSpace: 'pre-wrap' }}>{selectedContact.requirement}</div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

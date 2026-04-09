@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Modal from "./Modal";
 
 function CotactList() {
   const [contacts, setContacts] = useState([]);
   const [filteredContacts, setFilteredContacts] = useState([]);
   const [message, setMessage] = useState("");
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (contact) => {
+    setSelectedContact(contact);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedContact(null);
+  };
 
   // Filter States
   const [selectedMonth, setSelectedMonth] = useState("");
@@ -138,6 +151,7 @@ function CotactList() {
                   <th>Contact Method</th>
                   <th>Requirement</th>
                   <th>Submitted</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -166,6 +180,14 @@ function CotactList() {
                         minute: "2-digit",
                       })}
                     </td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-primary"
+                        onClick={() => openModal(contact)}
+                      >
+                        View
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -184,6 +206,51 @@ function CotactList() {
           </div>
         )}
       </div>
+
+      {selectedContact && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title="Contact Details"
+        >
+          <div className="detail-row">
+            <div className="detail-label">Name</div>
+            <div className="detail-value">{selectedContact.name}</div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Email</div>
+            <div className="detail-value">
+              <a href={`mailto:${selectedContact.email}`} style={{ color: 'var(--color-primary)' }}>
+                {selectedContact.email}
+              </a>
+            </div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Phone</div>
+            <div className="detail-value">{selectedContact.phone}</div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Country</div>
+            <div className="detail-value">{selectedContact.country}</div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Contact Method</div>
+            <div className="detail-value">
+              <span className="badge badge-success">{selectedContact.contactMethod}</span>
+            </div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Date Submitted</div>
+            <div className="detail-value">
+              {new Date(selectedContact.createdAt).toLocaleString()}
+            </div>
+          </div>
+          <div className="detail-row">
+            <div className="detail-label">Requirement/Message</div>
+            <div className="detail-value" style={{ whiteSpace: 'pre-wrap' }}>{selectedContact.requirement}</div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
